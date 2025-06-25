@@ -9,6 +9,10 @@ import re
 import os
 from langdetect import detect
 import spacy
+import spacy.cli
+spacy.cli.download("en_core_web_sm")
+nlp = spacy.load("en_core_web_sm")
+
 from google.cloud import vision
 from PIL import Image
 
