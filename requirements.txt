@@ -1,0 +1,7 @@
+streamlit
+docx2txt
+PyMuPDF
+Pillow
+langdetect
+spacy
+google-cloud-vision
