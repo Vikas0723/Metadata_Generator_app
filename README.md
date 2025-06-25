@@ -42,9 +42,6 @@ This project uses OCR (Optical Character Recognition) via **Google Cloud Vision 
 ---
 
 ## 🚀 How to Run This App Locally
-Follow these steps to set up and run the Metadata Generator web app on your local machine.
-
-## 🚀 How to Run This App Locally
 
 Follow these steps to set up and run the Metadata Generator web app on your local machine.
 
@@ -55,5 +52,88 @@ If this project is on GitHub:
 ```bash
 git clone https://github.com/your-username/metadata-generator-app.git
 cd metadata-generator-app
+```
+
+Or if you downloaded the ZIP:
+
+- Extract it
+- Open the folder in your terminal
+
+---
+
+### ✅ 2. Create a Virtual Environment (Optional but Recommended)
+
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+---
+
+### ✅ 3. Install the Required Libraries
+
+Make sure `pip` is updated, then install:
+
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+---
+
+### ✅ 4. Set Up Google Cloud Vision API (for OCR Support)
+
+This is only needed if you're working with **scanned PDFs**.
+
+#### Step 1: Enable the API
+- Go to [https://console.cloud.google.com](https://console.cloud.google.com)
+- Create a project or use an existing one
+- Enable **Google Cloud Vision API**
+
+#### Step 2: Create a Service Account Key
+- Go to IAM & Admin → Service Accounts
+- Create a service account and download the JSON key
+
+#### Step 3: Add Your Credentials to the App
+
+Create a `.streamlit/secrets.toml` file in your project folder:
+
+```toml
+# .streamlit/secrets.toml
+
+VISION_JSON = """
+{ paste your full JSON key content here }
+"""
+```
+
+Streamlit will automatically load this securely.
+
+---
+
+### ✅ 5. Run the Web App
+
+Now you're ready to launch:
+
+```bash
+streamlit run app.py
+```
+
+This will open the app in your browser at:
+
+```
+http://localhost:8501
+```
+
+---
+
+### ✅ 6. Upload a File and View Results
+
+- Click “Browse files” to upload a `.pdf`, `.docx`, or `.txt`
+- The app will:
+  - Extract text
+  - Show metadata and summary
+  - Highlight named entities
+  - Let you download the JSON output
+
 
 
