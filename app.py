@@ -8,16 +8,6 @@ from collections import Counter
 import re
 import os
 from langdetect import detect
-import spacy
-import spacy
-try:
-    nlp = spacy.load("en_core_web_sm")
-except OSError:
-    import spacy.cli
-    spacy.cli.download("en_core_web_sm")
-    nlp = spacy.load("en_core_web_sm")
-
-
 from google.cloud import vision
 from PIL import Image
 
@@ -26,9 +16,6 @@ if "VISION_JSON" in st.secrets:
     with open("vision-key.json", "w") as f:
         f.write(st.secrets["VISION_JSON"])
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "vision-key.json"
-
-# --- Load SpaCy Model ---
-nlp = spacy.load("en_core_web_sm")
 
 # --- OCR with Google Vision using pixmap directly ---
 def preprocess_pixmap(pixmap):
@@ -40,6 +27,7 @@ def preprocess_pixmap(pixmap):
     return buffer.getvalue()
 
 def google_ocr_from_pixmap(pixmap):
+    vision_client = vision.ImageAnnotatorClient()
     content = preprocess_pixmap(pixmap)
     image = vision.Image(content=content)
     image_context = vision.ImageContext(language_hints=["en", "hi"])
@@ -132,8 +120,25 @@ def extract_key_sentences(text, sentence_count=5):
     return ranked[:sentence_count]
 
 def extract_named_entities(text):
-    doc = nlp(text)
-    return [(ent.text, ent.label_) for ent in doc.ents if ent.label_ in ["PERSON", "ORG", "GPE", "DATE", "EVENT"]]
+    # Basic fallback for named entities using regex
+    entities = []
+
+    # Possible names: sequences of capitalized words
+    name_matches = re.findall(r'\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)\b', text)
+    for name in name_matches:
+        entities.append((name, "PERSON/ORG"))
+
+    # Simple date matches
+    date_matches = re.findall(r'\b(?:\d{1,2}[/-]\d{1,2}[/-]\d{2,4}|\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{1,2},?\s+\d{4})', text)
+    for date in date_matches:
+        entities.append((date, "DATE"))
+
+    # Keywords indicating orgs
+    org_matches = re.findall(r'\b[A-Z][a-zA-Z]+(?:\s+(Inc|Ltd|LLP|Company|Corporation|University))\b', text)
+    for org in org_matches:
+        entities.append((org, "ORG"))
+
+    return list(set(entities))
 
 # --- UI Layout ---
 st.set_page_config(page_title="Metadata Generator", page_icon="🧠", layout="wide")
