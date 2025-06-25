@@ -1,36 +1,59 @@
-# Metadata Generator with Google Cloud Vision OCR
+# 🧾 Metadata Generator Web App
 
-This app extracts text and metadata from uploaded files (PDF, DOCX, TXT) using OCR powered by Google Cloud Vision API.
+This is a simple, smart web application built using **Streamlit** that allows users to upload `.pdf`, `.docx`, or `.txt` files and automatically extracts useful metadata such as:
 
-## Features
+- Estimated **document title**
+- **Language**, **word count**, **line count**
+- Key **semantic sentences**
+- Extracted **named entities** (names, dates, organizations)
+- A readable **summary**
+- Option to **download metadata in JSON** format
 
-- OCR for scanned PDFs and images using Google Cloud Vision
-- Language detection
-- Named Entity Recognition (NER) using spaCy
-- Title guessing and key sentence extraction
-- JSON export of metadata
-
-## How to Use
-
-1. Upload your `vision-key.json` securely (never commit it to GitHub).
-2. Run locally with `streamlit run app.py` or deploy on [Streamlit Cloud](https://streamlit.io/cloud).
-3. Make sure to set your Google credentials properly:
-
-```bash
-export GOOGLE_APPLICATION_CREDENTIALS=vision-key.json
-```
-
-## Setup
-
-```bash
-pip install -r requirements.txt
-python -m spacy download en_core_web_sm
-```
-
-## Deployment Note
-
-Tesseract has been removed to ensure compatibility with Streamlit Cloud.
+This project uses OCR (Optical Character Recognition) via **Google Cloud Vision API** for scanned or image-based PDFs.
 
 ---
 
-Built with ❤️ using Streamlit and Google Cloud.
+## 📚 Features
+
+- ✅ Supports **PDF**, **Word (.docx)**, and **Text (.txt)** files
+- ✅ Handles scanned documents using **Google OCR**
+- ✅ Detects **language** of the text
+- ✅ Extracts **key sentences** from the content
+- ✅ Performs **basic NER (Named Entity Recognition)** without heavy NLP models
+- ✅ Generates a **summary** of the file
+- ✅ Allows **JSON download** of the metadata
+- ✅ Easy-to-use **Streamlit UI**
+
+---
+
+## 🛠️ Tech Stack
+
+| Tool/Library            | Purpose                                 |
+|-------------------------|-----------------------------------------|
+| `Streamlit`             | Web App UI                              |
+| `PyMuPDF (fitz)`        | PDF text & image extraction             |
+| `docx2txt`              | Extract text from Word files            |
+| `langdetect`            | Detect document language                |
+| `Google Cloud Vision`   | OCR for scanned PDFs                    |
+| `re` + regex            | Lightweight named entity extraction     |
+| `Pillow`                | Image processing                        |
+| `json`                  | Exporting metadata                     |
+
+---
+
+## 🚀 How to Run This App Locally
+Follow these steps to set up and run the Metadata Generator web app on your local machine.
+
+## 🚀 How to Run This App Locally
+
+Follow these steps to set up and run the Metadata Generator web app on your local machine.
+
+### ✅ 1. Clone the Repository
+
+If this project is on GitHub:
+
+```bash
+git clone https://github.com/your-username/metadata-generator-app.git
+cd metadata-generator-app
+
+
